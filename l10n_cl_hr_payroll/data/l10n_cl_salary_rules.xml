@@ -31,7 +31,7 @@ result = contract.l10n_cl_gratificacion_type == 'art47'
             </field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-indicators = env['l10n_cl.indicators'].search([
+indicators = payslip.env['l10n_cl.indicators'].search([
     ('month', '=', str(payslip.date_from.month)),
     ('year', '=', payslip.date_from.year),
 ], limit=1)
@@ -51,15 +51,14 @@ result = min(grat, tope)
 
             <field name="condition_select">python</field>
             <field name="condition_python">
-result = inputs.get('HEX25') and inputs['HEX25'].amount > 0
+result = inputs.HEX25 and inputs.HEX25.amount > 0
             </field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
 # Valor hora = sueldo / 30 / jornada_semanal * 7 / horas_jornada
 # Simplificado: sueldo / 30 / 8 * 1.25 (para jornada de 45 hrs)
 valor_hora = contract.wage / 30.0 / 8.0
-hex_input = inputs.get('HEX25')
-cantidad = hex_input.amount if hex_input else 0
+cantidad = inputs.HEX25.amount if inputs.HEX25 else 0
 result = round(valor_hora * 1.25 * cantidad)
             </field>
         </record>
@@ -73,13 +72,12 @@ result = round(valor_hora * 1.25 * cantidad)
 
             <field name="condition_select">python</field>
             <field name="condition_python">
-result = inputs.get('HEX50') and inputs['HEX50'].amount > 0
+result = inputs.HEX50 and inputs.HEX50.amount > 0
             </field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
 valor_hora = contract.wage / 30.0 / 8.0
-hex_input = inputs.get('HEX50')
-cantidad = hex_input.amount if hex_input else 0
+cantidad = inputs.HEX50.amount if inputs.HEX50 else 0
 result = round(valor_hora * 1.50 * cantidad)
             </field>
         </record>
@@ -128,7 +126,7 @@ result = contract.l10n_cl_movilizacion
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = categories['BASIC'] + categories['ALW']
+result = categories.BASIC + categories.ALW
             </field>
         </record>
 
@@ -138,12 +136,12 @@ result = categories['BASIC'] + categories['ALW']
             <field name="code">TOPIMP</field>
             <field name="sequence">25</field>
             <field name="category_id" ref="cl_categ_ded"/>
-
+            <field name="appears_on_payslip" eval="False"/>
 
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-indicators = env['l10n_cl.indicators'].search([
+indicators = payslip.env['l10n_cl.indicators'].search([
     ('month', '=', str(payslip.date_from.month)),
     ('year', '=', payslip.date_from.year),
 ], limit=1)
@@ -169,13 +167,13 @@ result = bool(employee.l10n_cl_afp_id)
             <field name="amount_python_compute">
 afp = employee.l10n_cl_afp_id
 tasa = (afp.mandatory_rate + afp.dependent_rate) / 100
-indicators = env['l10n_cl.indicators'].search([
+indicators = payslip.env['l10n_cl.indicators'].search([
     ('month', '=', str(payslip.date_from.month)),
     ('year', '=', payslip.date_from.year),
 ], limit=1)
 uf = indicators.uf if indicators else 38000
 tope = (indicators.tope_imponible_afp if indicators else 84.3) * uf
-base = min(categories['GROSS'], tope)
+base = min(categories.GROSS, tope)
 result = -round(base * tasa)
             </field>
         </record>
@@ -190,13 +188,13 @@ result = -round(base * tasa)
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-indicators = env['l10n_cl.indicators'].search([
+indicators = payslip.env['l10n_cl.indicators'].search([
     ('month', '=', str(payslip.date_from.month)),
     ('year', '=', payslip.date_from.year),
 ], limit=1)
 uf = indicators.uf if indicators else 38000
 tope = (indicators.tope_imponible_salud if indicators else 84.3) * uf
-base = min(categories['GROSS'], tope)
+base = min(categories.GROSS, tope)
 if employee.l10n_cl_health_plan == 'fonasa':
     result = -round(base * 0.07)
 elif employee.l10n_cl_health_plan == 'isapre':
@@ -222,13 +220,13 @@ result = contract.l10n_cl_contract_type == 'indefinido'
             </field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-indicators = env['l10n_cl.indicators'].search([
+indicators = payslip.env['l10n_cl.indicators'].search([
     ('month', '=', str(payslip.date_from.month)),
     ('year', '=', payslip.date_from.year),
 ], limit=1)
 uf = indicators.uf if indicators else 38000
 tope = (indicators.tope_seg_cesantia if indicators else 126.6) * uf
-base = min(categories['GROSS'], tope)
+base = min(categories.GROSS, tope)
 result = -round(base * 0.006)
             </field>
         </record>
@@ -239,12 +237,12 @@ result = -round(base * 0.006)
             <field name="code">TRIBASE</field>
             <field name="sequence">45</field>
             <field name="category_id" ref="cl_categ_ded"/>
-
+            <field name="appears_on_payslip" eval="False"/>
 
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-base = categories['GROSS'] + categories['DEDPREV'] + categories['DEDSALUD']
+base = categories.GROSS + categories.DEDPREV + categories.DEDSALUD
 if employee.l10n_cl_apv_regime == 'A' and employee.l10n_cl_apv_amount:
     base -= employee.l10n_cl_apv_amount
 result = 0
@@ -261,12 +259,12 @@ result = 0
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-indicators = env['l10n_cl.indicators'].search([
+indicators = payslip.env['l10n_cl.indicators'].search([
     ('month', '=', str(payslip.date_from.month)),
     ('year', '=', payslip.date_from.year),
 ], limit=1)
 utm = indicators.utm if indicators else 67000
-base = categories['GROSS'] + categories['DEDPREV'] + categories['DEDSALUD']
+base = categories.GROSS + categories.DEDPREV + categories.DEDSALUD
 if employee.l10n_cl_apv_regime == 'A' and employee.l10n_cl_apv_amount:
     base -= employee.l10n_cl_apv_amount
 base = max(base, 0)
@@ -304,11 +302,11 @@ result = employee.l10n_cl_cargas_familiares > 0
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
 cargas = employee.l10n_cl_cargas_familiares
-indicators = env['l10n_cl.indicators'].search([
+indicators = payslip.env['l10n_cl.indicators'].search([
     ('month', '=', str(payslip.date_from.month)),
     ('year', '=', payslip.date_from.year),
 ], limit=1)
-ingreso = categories['GROSS']
+ingreso = categories.GROSS
 if ingreso &lt;= 529000:
     monto = 18832
 elif ingreso &lt;= 772000:
@@ -331,7 +329,7 @@ result = cargas * monto
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = categories['DEDPREV'] + categories['DEDSALUD'] + categories['DEDTRIB']
+result = categories.DEDPREV + categories.DEDSALUD + categories.DEDTRIB
             </field>
         </record>
 
@@ -345,7 +343,7 @@ result = categories['DEDPREV'] + categories['DEDSALUD'] + categories['DEDTRIB']
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = categories['GROSS'] + categories['ALWNOTIMP'] + categories['DED'] + categories['DEDPREV'] + categories['DEDSALUD'] + categories['DEDTRIB']
+result = categories.GROSS + categories.ALWNOTIMP + categories.DED + categories.DEDPREV + categories.DEDSALUD + categories.DEDTRIB
             </field>
         </record>
 
@@ -361,9 +359,9 @@ result = categories['GROSS'] + categories['ALWNOTIMP'] + categories['DED'] + cat
             <field name="amount_python_compute">
 afp = employee.l10n_cl_afp_id
 if afp:
-    result = round(categories['GROSS'] * afp.sis_rate / 100)
+    result = round(categories.GROSS * afp.sis_rate / 100)
 else:
-    result = round(categories['GROSS'] * 0.0153)
+    result = round(categories.GROSS * 0.0153)
             </field>
         </record>
 
@@ -377,13 +375,13 @@ else:
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-indicators = env['l10n_cl.indicators'].search([
+indicators = payslip.env['l10n_cl.indicators'].search([
     ('month', '=', str(payslip.date_from.month)),
     ('year', '=', payslip.date_from.year),
 ], limit=1)
 uf = indicators.uf if indicators else 38000
 tope = (indicators.tope_seg_cesantia if indicators else 126.6) * uf
-base = min(categories['GROSS'], tope)
+base = min(categories.GROSS, tope)
 if contract.l10n_cl_contract_type == 'indefinido':
     result = round(base * 0.024)
 else:
@@ -401,7 +399,7 @@ else:
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = round(categories['GROSS'] * 0.0093)
+result = round(categories.GROSS * 0.0093)
             </field>
         </record>
 
@@ -415,7 +413,7 @@ result = round(categories['GROSS'] * 0.0093)
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
-result = categories['GROSS'] + categories['ALWNOTIMP'] + categories['COMP']
+result = categories.GROSS + categories.ALWNOTIMP + categories.COMP
             </field>
         </record>
 
