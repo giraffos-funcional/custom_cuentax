@@ -10,7 +10,7 @@
             <field name="code">BASIC</field>
             <field name="sequence">1</field>
             <field name="category_id" ref="cl_categ_basic"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -24,7 +24,7 @@ result = contract.wage
             <field name="code">GRAT</field>
             <field name="sequence">5</field>
             <field name="category_id" ref="cl_categ_alw"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">python</field>
             <field name="condition_python">
 result = contract.l10n_cl_gratificacion_type == 'art47'
@@ -48,7 +48,7 @@ result = min(grat, tope)
             <field name="code">HEX25</field>
             <field name="sequence">8</field>
             <field name="category_id" ref="cl_categ_alw"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">python</field>
             <field name="condition_python">
 result = inputs.get('HEX25') and inputs['HEX25'].amount > 0
@@ -70,7 +70,7 @@ result = round(valor_hora * 1.25 * cantidad)
             <field name="code">HEX50</field>
             <field name="sequence">9</field>
             <field name="category_id" ref="cl_categ_alw"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">python</field>
             <field name="condition_python">
 result = inputs.get('HEX50') and inputs['HEX50'].amount > 0
@@ -90,7 +90,7 @@ result = round(valor_hora * 1.50 * cantidad)
             <field name="code">COLACION</field>
             <field name="sequence">10</field>
             <field name="category_id" ref="cl_categ_alwnotimp"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">python</field>
             <field name="condition_python">
 result = contract.l10n_cl_colacion > 0
@@ -107,7 +107,7 @@ result = contract.l10n_cl_colacion
             <field name="code">MOVILIZACION</field>
             <field name="sequence">11</field>
             <field name="category_id" ref="cl_categ_alwnotimp"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">python</field>
             <field name="condition_python">
 result = contract.l10n_cl_movilizacion > 0
@@ -124,7 +124,7 @@ result = contract.l10n_cl_movilizacion
             <field name="code">GROSS</field>
             <field name="sequence">20</field>
             <field name="category_id" ref="cl_categ_gross"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -138,7 +138,7 @@ result = categories['BASIC'] + categories['ALW']
             <field name="code">TOPIMP</field>
             <field name="sequence">25</field>
             <field name="category_id" ref="cl_categ_ded"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
 
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
@@ -160,7 +160,7 @@ result = 0
             <field name="code">AFP</field>
             <field name="sequence">30</field>
             <field name="category_id" ref="cl_categ_dedprev"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">python</field>
             <field name="condition_python">
 result = bool(employee.l10n_cl_afp_id)
@@ -186,7 +186,7 @@ result = -round(base * tasa)
             <field name="code">SALUD</field>
             <field name="sequence">35</field>
             <field name="category_id" ref="cl_categ_dedsalud"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -215,7 +215,7 @@ else:
             <field name="code">CESANTIA</field>
             <field name="sequence">40</field>
             <field name="category_id" ref="cl_categ_dedprev"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">python</field>
             <field name="condition_python">
 result = contract.l10n_cl_contract_type == 'indefinido'
@@ -239,7 +239,7 @@ result = -round(base * 0.006)
             <field name="code">TRIBASE</field>
             <field name="sequence">45</field>
             <field name="category_id" ref="cl_categ_ded"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
 
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
@@ -257,7 +257,7 @@ result = 0
             <field name="code">IMPUNICO</field>
             <field name="sequence">50</field>
             <field name="category_id" ref="cl_categ_dedtrib"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -296,7 +296,7 @@ else:
             <field name="code">ASIGFAM</field>
             <field name="sequence">55</field>
             <field name="category_id" ref="cl_categ_alwnotimp"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">python</field>
             <field name="condition_python">
 result = employee.l10n_cl_cargas_familiares > 0
@@ -327,7 +327,7 @@ result = cargas * monto
             <field name="code">TOTALDED</field>
             <field name="sequence">60</field>
             <field name="category_id" ref="cl_categ_ded"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -341,7 +341,7 @@ result = categories['DEDPREV'] + categories['DEDSALUD'] + categories['DEDTRIB']
             <field name="code">NET</field>
             <field name="sequence">100</field>
             <field name="category_id" ref="cl_categ_net"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -355,7 +355,7 @@ result = categories['GROSS'] + categories['ALWNOTIMP'] + categories['DED'] + cat
             <field name="code">SISEMPL</field>
             <field name="sequence">110</field>
             <field name="category_id" ref="cl_categ_comp"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -373,7 +373,7 @@ else:
             <field name="code">CESEMPL</field>
             <field name="sequence">115</field>
             <field name="category_id" ref="cl_categ_comp"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -397,7 +397,7 @@ else:
             <field name="code">MUTUAL</field>
             <field name="sequence">120</field>
             <field name="category_id" ref="cl_categ_comp"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
@@ -411,12 +411,38 @@ result = round(categories['GROSS'] * 0.0093)
             <field name="code">COSTOEMP</field>
             <field name="sequence">130</field>
             <field name="category_id" ref="cl_categ_comp"/>
-            <field name="structure_id" ref="cl_structure_monthly"/>
+
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">
 result = categories['GROSS'] + categories['ALWNOTIMP'] + categories['COMP']
             </field>
+        </record>
+
+        <!-- Associate all rules to the Chilean structure via many2many -->
+        <record id="cl_structure_monthly" model="hr.payroll.structure">
+            <field name="rule_ids" eval="[(6, 0, [
+                ref('cl_rule_basic'),
+                ref('cl_rule_grat'),
+                ref('cl_rule_hex25'),
+                ref('cl_rule_hex50'),
+                ref('cl_rule_colacion'),
+                ref('cl_rule_movilizacion'),
+                ref('cl_rule_gross'),
+                ref('cl_rule_topimp'),
+                ref('cl_rule_afp'),
+                ref('cl_rule_salud'),
+                ref('cl_rule_cesantia'),
+                ref('cl_rule_tribase'),
+                ref('cl_rule_impunico'),
+                ref('cl_rule_asigfam'),
+                ref('cl_rule_totalded'),
+                ref('cl_rule_net'),
+                ref('cl_rule_sisempl'),
+                ref('cl_rule_cesempl'),
+                ref('cl_rule_mutual'),
+                ref('cl_rule_costoemp'),
+            ])]"/>
         </record>
 
     </data>
